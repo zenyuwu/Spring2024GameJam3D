@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(CharacterController))]
-public class CharacterController : MonoBehaviour
+public class CoolDogController : MonoBehaviour
 {
     private DefaultCharcterController playerActions;
     [SerializeField]private Transform groundCheck;
@@ -37,7 +36,9 @@ public class CharacterController : MonoBehaviour
         moveAction.Enable();
 
         playerActions.Player.Jump.performed += OnJump;
+        Debug.Log("OnJump subscribed");
         playerActions.Player.Jump.Enable();
+        Debug.Log("OnJump enabled");
     }
 
     private void OnDisable()
@@ -45,7 +46,10 @@ public class CharacterController : MonoBehaviour
         moveAction.Disable();
 
         playerActions.Player.Jump.performed -= OnJump;
+        Debug.Log("OnJump unsubscribed");
+
         playerActions.Player.Jump.Disable();
+        Debug.Log("OnJump disabled");
     }
 
     private void OnJump(InputAction.CallbackContext context)
