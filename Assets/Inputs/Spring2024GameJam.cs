@@ -15,10 +15,10 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-public partial class @DefaultCharcterController: IInputActionCollection2, IDisposable
+public partial class @CoolDogCharcterController: IInputActionCollection2, IDisposable
 {
     public InputActionAsset asset { get; }
-    public @DefaultCharcterController()
+    public @CoolDogCharcterController()
     {
         asset = InputActionAsset.FromJson(@"{
     ""name"": ""Spring2024GameJam"",
@@ -842,8 +842,8 @@ public partial class @DefaultCharcterController: IInputActionCollection2, IDispo
     private readonly InputAction m_Player_Jump;
     public struct PlayerActions
     {
-        private @DefaultCharcterController m_Wrapper;
-        public PlayerActions(@DefaultCharcterController wrapper) { m_Wrapper = wrapper; }
+        private @CoolDogCharcterController m_Wrapper;
+        public PlayerActions(@CoolDogCharcterController wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -904,8 +904,8 @@ public partial class @DefaultCharcterController: IInputActionCollection2, IDispo
     private readonly InputAction m_UI_TrackedDeviceOrientation;
     public struct UIActions
     {
-        private @DefaultCharcterController m_Wrapper;
-        public UIActions(@DefaultCharcterController wrapper) { m_Wrapper = wrapper; }
+        private @CoolDogCharcterController m_Wrapper;
+        public UIActions(@CoolDogCharcterController wrapper) { m_Wrapper = wrapper; }
         public InputAction @Navigate => m_Wrapper.m_UI_Navigate;
         public InputAction @Submit => m_Wrapper.m_UI_Submit;
         public InputAction @Cancel => m_Wrapper.m_UI_Cancel;

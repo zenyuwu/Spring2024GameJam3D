@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
 public class CoolDogController : MonoBehaviour
 {
-    private DefaultCharcterController playerActions;
+    private CoolDogCharcterController playerActions;
     [SerializeField]private Transform groundCheck;
 
     private InputAction moveAction;
@@ -24,7 +24,7 @@ public class CoolDogController : MonoBehaviour
 
     private void Awake()
     {
-        playerActions = new DefaultCharcterController();
+        playerActions = new CoolDogCharcterController();
         rb = GetComponent<Rigidbody>();
 
         groundLayerMask = LayerMask.GetMask("Ground");
@@ -71,11 +71,11 @@ public class CoolDogController : MonoBehaviour
         Vector2 moveDirection = moveAction.ReadValue<Vector2>();
         Vector2 velocity = rb.velocity;
 
-        velocity.x = moveDirection.x;
+        velocity.x = moveDirection.x * maxSpeed;
 
         rb.velocity = velocity;
 
-        if (velocity != Vector2.zero)
+/*        if (velocity != Vector2.zero)
         {
             rb.AddForce(rb.velocity * accel, ForceMode.Force);
 
@@ -87,7 +87,14 @@ public class CoolDogController : MonoBehaviour
         else
         {
             rb.AddForce(rb.velocity * -decel, ForceMode.Force);
-        }
+        }*/
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.color = isGrounded ? Color.green : Color.red;
+        Gizmos.DrawRay(transform.position, groundCheck.position);
     }
 }
 
