@@ -18,6 +18,7 @@ public class RailState : ICoolDogState
     public void EnterState()
     {
         //do anim
+        Debug.Log("rail enter");
     }
 
     public void ExitState()

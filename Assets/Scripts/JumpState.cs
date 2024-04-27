@@ -15,7 +15,9 @@ public class JumpState : ICoolDogState
     public void EnterState()
     {
         controller.rb.AddForce(Vector3.up * controller.jumpForce, ForceMode.Impulse);
-        controller.StartCoroutine(IsJumping());
+        controller.stateMachine.ChangeState(new IdleState(controller));
+        //controller.StartCoroutine(IsJumping());
+        Debug.Log("jump enter");
     }
 
     public void ExitState()

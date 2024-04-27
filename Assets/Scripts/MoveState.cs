@@ -14,7 +14,7 @@ public class MoveState : ICoolDogState
 
     public void EnterState()
     {
-        
+        Debug.Log("move enter");
     }
 
     public void ExitState()
@@ -27,10 +27,11 @@ public class MoveState : ICoolDogState
     {
         Vector2 moveDirection = controller.moveAction.ReadValue<Vector2>();
 
-        if (!controller.isGrounded)
-        {
-            controller.stateMachine.ChangeState(new FallState(controller));
-        }else if (moveDirection.x == 0)
+        //if (!controller.isGrounded)
+        //{
+        //    controller.stateMachine.ChangeState(new FallState(controller));
+        //}else 
+        if (moveDirection.x == 0)
         {
             controller.stateMachine.ChangeState(new IdleState(controller)); 
             return;
