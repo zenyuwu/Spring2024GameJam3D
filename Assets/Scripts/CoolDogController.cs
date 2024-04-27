@@ -14,13 +14,18 @@ public class CoolDogController : MonoBehaviour
 
     [SerializeField] float accel = 5f;
     [SerializeField] float decel = 5f;
-    [SerializeField] float maxSpeed = 20f;
+    [SerializeField] float baseSpeed = 5f;
+    [SerializeField] float cool = 0f;
+    [SerializeField] int health = 3;
+    [SerializeField] float coolNerf = 10f;
 
     [SerializeField] bool faceRight = true;
-    [SerializeField] float jumpForce = 6f;       
+    [SerializeField] float jumpForce = 6f; 
     [SerializeField] bool isGrounded = false;
+    [SerializeField] bool isOnRail = false;
 
     private LayerMask groundLayerMask;
+    private LayerMask railLayerMask;
 
     private void Awake()
     {
@@ -28,6 +33,7 @@ public class CoolDogController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         groundLayerMask = LayerMask.GetMask("Ground");
+        railLayerMask = LayerMask.GetMask("Rail");
     }
 
     private void OnEnable()
@@ -57,22 +63,31 @@ public class CoolDogController : MonoBehaviour
         if(isGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            GameManger.Instance.AddCool(10);
+            cool += 10;
         }
     }
 
     private void FixedUpdate()
     {
+        cool -= Time.deltaTime;
+        if (cool < 0) cool = 0;
+        if (cool > 100) cool = 100;
+        GameManager.Instance.SetCool(cool);
+
+        if (Input.GetKeyDown(KeyCode.Backspace)) health--;
+        if (Input.GetKeyDown(KeyCode.Escape)) health++;
+        GameManager.Instance.SetHealth(health);
+
         //ground check
         //only works on jump
         isGrounded = Physics.Raycast(groundCheck.position, Vector3.down, 0.05f, groundLayerMask);
-
+        isOnRail = Physics.Raycast(groundCheck.position, Vector3.down, 0.10f, railLayerMask); //needs to be a 0.10f to hit both horizontal and tilted rails
 
         //setting up movement
         Vector2 moveDirection = moveAction.ReadValue<Vector2>();
         Vector2 velocity = rb.velocity;
 
-        velocity.x = moveDirection.x * maxSpeed;
+        velocity.x = moveDirection.x * ((cool / coolNerf) + 5);
 
         rb.velocity = velocity;
 
