@@ -9,6 +9,7 @@ public class CoolDogController : MonoBehaviour
     private CoolDogCharcterController playerActions;
     [SerializeField]private Transform groundCheck;
     [SerializeField]private GameObject skateBoard;
+    [SerializeField]private SpriteRenderer dogSprite;
 
     private InputAction moveAction;
 
@@ -105,8 +106,9 @@ public class CoolDogController : MonoBehaviour
         if (moveDirection.x > 0) faceRight = false;
         if (moveDirection.x < 0) faceRight = true;
         //cool dog rotation
-        GetComponent<SpriteRenderer>().flipX = faceRight;
-        //skateboard rotation
+        dogSprite.flipX = faceRight;
+        //skateboard rotation, need to lock behind idle state (?)
+
         skateBoard.transform.localRotation = faceRight ? Quaternion.Euler(0, 90, 0) : Quaternion.Euler(0, 270, 0);
 
         if (lastRailStatus == true && isOnRail == false)
