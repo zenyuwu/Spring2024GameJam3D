@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Kaboom : MonoBehaviour
 {
+    [SerializeField] float time = 1.25f;
     // Start is called before the first frame update
     void Start()
     {
-        Destroy(gameObject, 1f);
+        Destroy(gameObject, time);
     }
 
     // Update is called once per frame
