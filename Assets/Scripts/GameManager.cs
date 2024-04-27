@@ -12,7 +12,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] GameObject healthMeter;
 
     private float cool = 0;
-    private int health = 0;
+    private float health = 0;
 
     // Start is called before the first frame update
     void Start()

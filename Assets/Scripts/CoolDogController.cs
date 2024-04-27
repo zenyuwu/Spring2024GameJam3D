@@ -74,18 +74,22 @@ public class CoolDogController : MonoBehaviour
         if (cool > 100) cool = 100;
         GameManager.Instance.SetCool(cool);
 
-        if (Input.GetKeyDown(KeyCode.Backspace)) health--;
-        if (Input.GetKeyDown(KeyCode.Escape)) health++;
+        if (health > 3) health = 3;
+        if (health < 0) health = 0;
         GameManager.Instance.SetHealth(health);
 
         //ground check
         //only works on jump
         isGrounded = Physics.Raycast(groundCheck.position, Vector3.down, 0.05f, groundLayerMask);
-        isOnRail = Physics.Raycast(groundCheck.position, Vector3.down, 0.10f, railLayerMask); //needs to be a 0.10f to hit both horizontal and tilted rails
+        isOnRail = Physics.Raycast(groundCheck.position, Vector3.down, 0.10f, railLayerMask); //needs to be 0.10f to hit both horizontal and tilted rails
 
         //setting up movement
         Vector2 moveDirection = moveAction.ReadValue<Vector2>();
         Vector2 velocity = rb.velocity;
+
+        if (moveDirection.x > 0) faceRight = false;
+        if (moveDirection.x < 0) faceRight = true;
+        GetComponent<SpriteRenderer>().flipX = faceRight;
 
         velocity.x = moveDirection.x * ((cool / coolNerf) + 5);
 
