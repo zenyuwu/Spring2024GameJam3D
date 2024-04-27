@@ -27,6 +27,10 @@ public class CoolDogController : MonoBehaviour
     private LayerMask groundLayerMask;
     private LayerMask railLayerMask;
 
+    private Vector2 lastDirection;
+    private bool lastRailStatus;
+    private bool shmoovementLocked;
+
     private void Awake()
     {
         playerActions = new CoolDogCharcterController();
@@ -60,7 +64,7 @@ public class CoolDogController : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext context)
     {
-        if(isGrounded)
+        if(isGrounded || isOnRail)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             cool += 10;
@@ -80,18 +84,34 @@ public class CoolDogController : MonoBehaviour
 
         //ground check
         //only works on jump
+        lastRailStatus = isOnRail;
         isGrounded = Physics.Raycast(groundCheck.position, Vector3.down, 0.05f, groundLayerMask);
         isOnRail = Physics.Raycast(groundCheck.position, Vector3.down, 0.10f, railLayerMask); //needs to be 0.10f to hit both horizontal and tilted rails
 
         //setting up movement
         Vector2 moveDirection = moveAction.ReadValue<Vector2>();
+        if (moveDirection.x != 0 || moveDirection.y != 0) lastDirection = moveDirection;
         Vector2 velocity = rb.velocity;
 
         if (moveDirection.x > 0) faceRight = false;
         if (moveDirection.x < 0) faceRight = true;
         GetComponent<SpriteRenderer>().flipX = faceRight;
 
-        velocity.x = moveDirection.x * ((cool / coolNerf) + 5);
+        if (lastRailStatus == true && isOnRail == false)
+        {
+            shmoovementLocked = true;
+            velocity.y += 5;
+            StartCoroutine(StopLockedMovement());
+        }
+
+        if (isOnRail || shmoovementLocked)
+        {
+            velocity.x = lastDirection.x * ((cool / (coolNerf/2)) + baseSpeed * 2);
+        }
+        else
+        {
+            velocity.x = moveDirection.x * ((cool / coolNerf) + baseSpeed);
+        }
 
         rb.velocity = velocity;
 
@@ -108,6 +128,12 @@ public class CoolDogController : MonoBehaviour
         {
             rb.AddForce(rb.velocity * -decel, ForceMode.Force);
         }*/
+    }
+
+    IEnumerator StopLockedMovement()
+    {
+        yield return new WaitForSeconds(1);
+        shmoovementLocked = false;
     }
 
     private void OnDrawGizmos()
