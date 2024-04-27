@@ -5,7 +5,11 @@ using UnityEngine;
 
 public class Car : MonoBehaviour
 {
-    [SerializeField] Kaboom kaboom;
+    [SerializeField] GameObject kaboom;
+    [SerializeField] GameObject car1;
+    [SerializeField] GameObject car2;
+    CoolDogCharcterController controller;
+    public bool carCrash = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,8 +24,12 @@ public class Car : MonoBehaviour
 
     public void GetStomped()
     {
-        Vector3 scaleChange = gameObject.transform.localScale;
-        scaleChange.y = 0.3f;
-        gameObject.transform.localScale = scaleChange;
+        car1.GetComponent<SpriteRenderer>().enabled = false;
+        car2.GetComponent<SpriteRenderer>().enabled = true;
+        //Vector3 scaleChange = gameObject.transform.localScale;
+        GetComponent<BoxCollider>().size = new Vector3(1.06f, 0.44f, 1f);
+        carCrash = true;
+        Instantiate(kaboom, transform);
+        //gameObject.transform.localScale = scaleChange;
     }
 }

@@ -110,13 +110,17 @@ public class CoolDogController : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(groundCheck.position, Vector3.down, out hit, 0.10f, carLayerMask))
         {
-            hit.transform.gameObject.GetComponent<Car>().GetStomped();
-            rb.velocity += new Vector3(0, 7.5f, 0);
+            if (hit.transform.gameObject.GetComponent<Car>().carCrash == false)
+            {
+                hit.transform.gameObject.GetComponent<Car>().GetStomped();
+                rb.AddForce(Vector3.up * 15f, ForceMode.Impulse);
+            }
+            //rb.velocity += new Vector3(0, 7.5f, 0);
         }
 
         //skateboard rotation, need to lock behind idle state (?)
 
-        skateBoard.transform.localRotation = faceRight ? Quaternion.Euler(0, 90, 0) : Quaternion.Euler(0, 270, 0);
+        skateBoard.transform.localRotation = dogSprite.flipX ? Quaternion.Euler(0, 90, 0) : Quaternion.Euler(0, 270, 0);
 
     }
 
