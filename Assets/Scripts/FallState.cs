@@ -67,6 +67,7 @@ public class FallState : ICoolDogState
         {
             if(controller.moveAction.ReadValue<Vector2>() != Vector2.zero)
             {
+                slowingX = false;
                 yield break;
             }
             Vector3 horizontalKill = Vector3.zero;
