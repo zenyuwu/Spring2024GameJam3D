@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
@@ -26,9 +27,10 @@ public class CoolDogController : MonoBehaviour
 
     private LayerMask groundLayerMask;
     private LayerMask railLayerMask;
+    private LayerMask carLayerMask;
 
     private Vector2 lastDirection;
-    private bool lastRailStatus;
+    private bool lastRailStatus = false;
     private bool shmoovementLocked;
 
     private void Awake()
@@ -38,6 +40,7 @@ public class CoolDogController : MonoBehaviour
 
         groundLayerMask = LayerMask.GetMask("Ground");
         railLayerMask = LayerMask.GetMask("Rail");
+        carLayerMask = LayerMask.GetMask("Car");
     }
 
     private void OnEnable()
@@ -67,7 +70,7 @@ public class CoolDogController : MonoBehaviour
         if(isGrounded || isOnRail)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            cool += 10;
+            cool -= 10;
         }
     }
 
@@ -86,7 +89,12 @@ public class CoolDogController : MonoBehaviour
         //only works on jump
         lastRailStatus = isOnRail;
         isGrounded = Physics.Raycast(groundCheck.position, Vector3.down, 0.05f, groundLayerMask);
-        isOnRail = Physics.Raycast(groundCheck.position, Vector3.down, 0.10f, railLayerMask); //needs to be 0.10f to hit both horizontal and tilted rails
+        isOnRail = Physics.Raycast(groundCheck.position, Vector3.down, 0.1f, railLayerMask); //needs to be 0.10f to hit both horizontal and tilted rails
+        RaycastHit hit;
+        if (Physics.Raycast(groundCheck.position, Vector3.down, out hit, 0.10f, carLayerMask))
+        {
+            hit.transform.gameObject.GetComponent<Car>().GetStomped();
+        }
 
         //setting up movement
         Vector2 moveDirection = moveAction.ReadValue<Vector2>();
@@ -99,18 +107,27 @@ public class CoolDogController : MonoBehaviour
 
         if (lastRailStatus == true && isOnRail == false)
         {
+            Debug.Log("on -> off rail");
             shmoovementLocked = true;
             velocity.y += 5;
+            cool += 10;
             StartCoroutine(StopLockedMovement());
         }
 
         if (isOnRail || shmoovementLocked)
         {
-            velocity.x = lastDirection.x * ((cool / (coolNerf/2)) + baseSpeed * 2);
+            velocity.x = lastDirection.x * ((cool / (coolNerf / 3)) + baseSpeed * 2);
         }
         else
         {
-            velocity.x = moveDirection.x * ((cool / coolNerf) + baseSpeed);
+            if (moveDirection.x != 0)
+            {
+                velocity.x = moveDirection.x * ((cool / coolNerf) + baseSpeed);
+            }
+            else
+            {
+                velocity.x = velocity.x * 0.95f;
+            }
         }
 
         rb.velocity = velocity;
@@ -134,6 +151,20 @@ public class CoolDogController : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         shmoovementLocked = false;
+        yield break;
+    }
+
+    IEnumerator Rotate()
+    {
+        rb.constraints = ~RigidbodyConstraints.FreezeRotationY;
+        transform.Rotate(0, 20, 0);
+        yield return new WaitForSeconds(0.1f);
+        if(transform.rotation.y > 360)
+        {
+            transform.rotation = Quaternion.identity;
+            rb.freezeRotation = true;
+            yield break;
+        }
     }
 
     private void OnDrawGizmos()
