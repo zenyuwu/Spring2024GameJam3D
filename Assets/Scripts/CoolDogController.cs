@@ -57,6 +57,7 @@ public class CoolDogController : MonoBehaviour
         if(isGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            GameManger.Instance.AddCool(10);
         }
     }
 
