@@ -26,15 +26,13 @@ public class MoveState : ICoolDogState
     public void HandleInput()
     {
         Vector2 moveDirection = controller.moveAction.ReadValue<Vector2>();
-
+        
         if (moveDirection.x == 0)
         {
             controller.stateMachine.ChangeState(new IdleState(controller)); 
             return;
         }
 
-        if (moveDirection.x > 0) controller.dogSprite.flipX = false;
-        if (moveDirection.x < 0) controller.dogSprite.flipX = true;
         Vector2 velocity = controller.rb.velocity;
 
         velocity.x = moveDirection.x * ((controller.cool / controller.coolNerf) + controller.baseSpeed);

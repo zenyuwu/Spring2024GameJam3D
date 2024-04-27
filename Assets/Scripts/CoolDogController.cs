@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
 [RequireComponent(typeof(Rigidbody))]
 public class CoolDogController : MonoBehaviour
 {
@@ -74,6 +76,8 @@ public class CoolDogController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Vector2 moveDirection = moveAction.ReadValue<Vector2>();
+
         stateMachine.Update();
         stateMachine.HandleInput();
         cool -= Time.deltaTime;
@@ -88,18 +92,26 @@ public class CoolDogController : MonoBehaviour
         //ground check
         //only works on jump
         isGrounded = Physics.Raycast(groundCheck.position, Vector3.down, 0.05f, groundLayerMask);
+        RaycastHit railHit;
+        isOnRail = Physics.Raycast(groundCheck.position, Vector3.down, out railHit, 0.1f, railLayerMask);
 
         //Physics.Raycast(groundCheck.position, Vector3.down, 0.1f, railLayerMask);
 
-        if (isOnRail)
+        if (isOnRail == true)
         {
+            railHit.transform.gameObject.GetComponentInChildren<Rail>().isOnRail = true;
             stateMachine.ChangeState(new RailState(this, isRailRight));
         }
 
+        if (moveDirection.x > 0) dogSprite.flipX = false;
+        if (moveDirection.x < 0) dogSprite.flipX = true;
+
+        //seperate to car.cs
         RaycastHit hit;
         if (Physics.Raycast(groundCheck.position, Vector3.down, out hit, 0.10f, carLayerMask))
         {
             hit.transform.gameObject.GetComponent<Car>().GetStomped();
+            rb.velocity += new Vector3(0, 7.5f, 0);
         }
 
         //skateboard rotation, need to lock behind idle state (?)
@@ -108,11 +120,11 @@ public class CoolDogController : MonoBehaviour
 
     }
 
-    private void OnDrawGizmos()
+/*    private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
         Gizmos.color = isGrounded ? Color.green : Color.red;
         Gizmos.DrawRay(transform.position, groundCheck.position);
-    }
+    }*/
 }
 

@@ -12,6 +12,7 @@ public class RailState : ICoolDogState
     {
         this.controller = controller;
         this.isRight = isRailRight;
+
     }
 
     public void EnterState()
@@ -21,7 +22,7 @@ public class RailState : ICoolDogState
 
     public void ExitState()
     {
-        controller.rb.velocity += new Vector3(0, 5, 0);
+        //
         controller.StartCoroutine(StopMovement());
     }
 
@@ -35,15 +36,6 @@ public class RailState : ICoolDogState
         if (!controller.isOnRail) controller.stateMachine.ChangeState(new IdleState(controller));
         //continue anim?
 
-        float moveDirection = isRight ? 1 : -1;
-
-        if (moveDirection > 0) controller.dogSprite.flipX = false;
-        if (moveDirection < 0) controller.dogSprite.flipX = true;
-        Vector2 velocity = controller.rb.velocity;
-
-        velocity.x = moveDirection * ((controller.cool / controller.coolNerf) + controller.baseSpeed);
-
-        controller.rb.velocity = velocity;
     }
 
     IEnumerator StopMovement()
