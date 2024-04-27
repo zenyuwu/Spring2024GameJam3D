@@ -5,23 +5,32 @@ using UnityEngine.InputSystem;
 
 public class JumpState : ICoolDogState
 {
+    CoolDogController controller;
+
+    public JumpState(CoolDogController controller)
+    {
+        this.controller = controller;
+    }
+
     public void EnterState()
     {
-        throw new System.NotImplementedException();
+        controller.rb.AddForce(Vector3.up * controller.jumpForce, ForceMode.Impulse);
+        controller.stateMachine.ChangeState(new IdleState(controller));
     }
 
     public void ExitState()
     {
-        throw new System.NotImplementedException();
+        
     }
 
-    public void HandleInput(InputAction.CallbackContext context)
+    public void HandleInput()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public void UpdateState()
     {
-        throw new System.NotImplementedException();
+        
     }
+
 }

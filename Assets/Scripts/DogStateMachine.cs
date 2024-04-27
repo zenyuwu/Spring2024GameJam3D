@@ -7,9 +7,9 @@ using UnityEngine.InputSystem;
 public class DogStateMachine : MonoBehaviour
 {
     private ICoolDogState currentState;
-    private CoolDogController controller;
+    [SerializeField] CoolDogController controller;
 
-    public DogStateMachine()
+    private void Awake()
     {
         currentState = new IdleState(controller);
     }
@@ -26,9 +26,9 @@ public class DogStateMachine : MonoBehaviour
         currentState.UpdateState();
     }
 
-    public void HandleInput(InputAction.CallbackContext context)
+    public void HandleInput()
     {
-        currentState.HandleInput(context);
+        currentState.HandleInput();
     }
 }
 
@@ -37,5 +37,5 @@ public interface ICoolDogState
     void EnterState();
     void UpdateState();
     void ExitState();
-    void HandleInput(InputAction.CallbackContext context);
+    void HandleInput();
 }

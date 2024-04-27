@@ -6,39 +6,38 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
 public class CoolDogController : MonoBehaviour
 {
+    public DogStateMachine stateMachine;
     private CoolDogCharcterController playerActions;
     [SerializeField]private Transform groundCheck;
     [SerializeField]private GameObject skateBoard;
-    [SerializeField]private SpriteRenderer dogSprite;
+    [SerializeField]public SpriteRenderer dogSprite;
 
-    private InputAction moveAction;
+    public InputAction moveAction;
 
-    [SerializeField] Rigidbody rb;
+    [SerializeField] public Rigidbody rb;
 
-    [SerializeField] float accel = 5f;
-    [SerializeField] float decel = 5f;
-    [SerializeField] float baseSpeed = 5f;
-    [SerializeField] float cool = 0f;
-    [SerializeField] int health = 3;
-    [SerializeField] float coolNerf = 10f;
+    [SerializeField] public float accel = 5f;
+    [SerializeField] public float decel = 5f;
+    [SerializeField] public float baseSpeed = 5f;
+    [SerializeField] public float cool = 0f;
+    [SerializeField] public int health = 3;
+    [SerializeField] public float coolNerf = 10f;
 
-    [SerializeField] bool faceRight = true;
-    [SerializeField] float jumpForce = 6f; 
-    [SerializeField] bool isGrounded = false;
-    [SerializeField] bool isOnRail = false;
+    [SerializeField] public bool faceRight = true;
+    [SerializeField] public float jumpForce = 6f; 
+    [SerializeField] public bool isGrounded = false;
+    [SerializeField] public bool isOnRail = false;
+    public bool isRailRight;
 
     private LayerMask groundLayerMask;
     private LayerMask railLayerMask;
     private LayerMask carLayerMask;
 
-    private Vector2 lastDirection;
-    private bool lastRailStatus = false;
-    private bool shmoovementLocked;
-
     private void Awake()
     {
         playerActions = new CoolDogCharcterController();
         rb = GetComponent<Rigidbody>();
+        stateMachine = GetComponent<DogStateMachine>();
 
         groundLayerMask = LayerMask.GetMask("Ground");
         railLayerMask = LayerMask.GetMask("Rail");
@@ -51,9 +50,9 @@ public class CoolDogController : MonoBehaviour
         moveAction.Enable();
 
         playerActions.Player.Jump.performed += OnJump;
-        Debug.Log("OnJump subscribed");
         playerActions.Player.Jump.Enable();
-        Debug.Log("OnJump enabled");
+
+        stateMachine.HandleInput();
     }
 
     private void OnDisable()
@@ -61,23 +60,22 @@ public class CoolDogController : MonoBehaviour
         moveAction.Disable();
 
         playerActions.Player.Jump.performed -= OnJump;
-        Debug.Log("OnJump unsubscribed");
-
         playerActions.Player.Jump.Disable();
-        Debug.Log("OnJump disabled");
     }
 
     private void OnJump(InputAction.CallbackContext context)
     {
         if(isGrounded || isOnRail)
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            stateMachine.ChangeState(new JumpState(this));
             cool -= 10;
         }
     }
 
     private void FixedUpdate()
     {
+        stateMachine.Update();
+        stateMachine.HandleInput();
         cool -= Time.deltaTime;
         if (cool < 0) cool = 0;
         if (cool > 100) cool = 100;
@@ -89,88 +87,25 @@ public class CoolDogController : MonoBehaviour
 
         //ground check
         //only works on jump
-        lastRailStatus = isOnRail;
         isGrounded = Physics.Raycast(groundCheck.position, Vector3.down, 0.05f, groundLayerMask);
-        isOnRail = Physics.Raycast(groundCheck.position, Vector3.down, 0.1f, railLayerMask); //needs to be 0.10f to hit both horizontal and tilted rails
+
+        //Physics.Raycast(groundCheck.position, Vector3.down, 0.1f, railLayerMask);
+
+        if (isOnRail)
+        {
+            stateMachine.ChangeState(new RailState(this, isRailRight));
+        }
+
         RaycastHit hit;
         if (Physics.Raycast(groundCheck.position, Vector3.down, out hit, 0.10f, carLayerMask))
         {
             hit.transform.gameObject.GetComponent<Car>().GetStomped();
         }
 
-        //setting up movement
-        Vector2 moveDirection = moveAction.ReadValue<Vector2>();
-        if (moveDirection.x != 0 || moveDirection.y != 0) lastDirection = moveDirection;
-        Vector2 velocity = rb.velocity;
-
-        if (moveDirection.x > 0) faceRight = false;
-        if (moveDirection.x < 0) faceRight = true;
-        //cool dog rotation
-        dogSprite.flipX = faceRight;
         //skateboard rotation, need to lock behind idle state (?)
 
         skateBoard.transform.localRotation = faceRight ? Quaternion.Euler(0, 90, 0) : Quaternion.Euler(0, 270, 0);
 
-        if (lastRailStatus == true && isOnRail == false)
-        {
-            Debug.Log("on -> off rail");
-            shmoovementLocked = true;
-            velocity.y += 5;
-            cool += 10;
-            StartCoroutine(StopLockedMovement());
-        }
-
-        if (isOnRail || shmoovementLocked)
-        {
-            velocity.x = lastDirection.x * ((cool / (coolNerf / 3)) + baseSpeed * 2);
-        }
-        else
-        {
-            if (moveDirection.x != 0)
-            {
-                velocity.x = moveDirection.x * ((cool / coolNerf) + baseSpeed);
-            }
-            else
-            {
-                velocity.x = velocity.x * 0.95f;
-            }
-        }
-
-        rb.velocity = velocity;
-
-/*        if (velocity != Vector2.zero)
-        {
-            rb.AddForce(rb.velocity * accel, ForceMode.Force);
-
-            if (rb.velocity.magnitude > maxSpeed)
-            {
-                rb.velocity = rb.velocity.normalized * maxSpeed;
-            }
-        }
-        else
-        {
-            rb.AddForce(rb.velocity * -decel, ForceMode.Force);
-        }*/
-    }
-
-    IEnumerator StopLockedMovement()
-    {
-        yield return new WaitForSeconds(1);
-        shmoovementLocked = false;
-        yield break;
-    }
-
-    IEnumerator Rotate()
-    {
-        rb.constraints = ~RigidbodyConstraints.FreezeRotationY;
-        transform.Rotate(0, 20, 0);
-        yield return new WaitForSeconds(0.1f);
-        if(transform.rotation.y > 360)
-        {
-            transform.rotation = Quaternion.identity;
-            rb.freezeRotation = true;
-            yield break;
-        }
     }
 
     private void OnDrawGizmos()

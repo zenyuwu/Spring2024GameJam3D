@@ -15,21 +15,24 @@ public class IdleState : ICoolDogState
 
     public void EnterState()
     {
-        throw new System.NotImplementedException();
+
     }
 
     public void ExitState()
     {
-        throw new System.NotImplementedException();
+
     }
 
-    public void HandleInput(InputAction.CallbackContext context)
+    public void HandleInput()
     {
-        throw new System.NotImplementedException();
+        if(controller.moveAction.ReadValue<Vector2>().x != 0)
+        {
+            controller.stateMachine.ChangeState(new MoveState(controller));
+        }
     }
 
     public void UpdateState()
     {
-        
+
     }
 }
