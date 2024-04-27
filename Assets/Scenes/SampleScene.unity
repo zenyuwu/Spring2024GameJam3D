@@ -794,14 +794,14 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   rb: {fileID: 690935261}
-  accel: 5
+  accel: 3
   decel: 0
   baseSpeed: 5
   cool: 0
   health: 3
   coolNerf: 10
   faceRight: 1
-  jumpForce: 8
+  jumpForce: 9
   isGrounded: 0
   isOnRail: 0
   isRailRight: 0
@@ -1097,7 +1097,7 @@ Transform:
   m_GameObject: {fileID: 905632511}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 17, y: 3, z: 0}
+  m_LocalPosition: {x: 15.75, y: 3.25, z: 0}
   m_LocalScale: {x: 1, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1524,7 +1524,7 @@ Transform:
   m_GameObject: {fileID: 1017924884}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16, y: 6, z: 0}
+  m_LocalPosition: {x: 14.75, y: 7, z: 0}
   m_LocalScale: {x: 1, y: 8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1849,7 +1849,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isRight: 0
   isOnRail: 0
-  controller: {fileID: 690935266}
+  controller: {fileID: 0}
 --- !u!1 &1121703569
 GameObject:
   m_ObjectHideFlags: 0
@@ -2198,7 +2198,7 @@ Transform:
   m_GameObject: {fileID: 1319261583}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 17, y: 7.75, z: 0}
+  m_LocalPosition: {x: 15.75, y: 7.5, z: 0}
   m_LocalScale: {x: 1, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

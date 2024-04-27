@@ -26,8 +26,11 @@ public class MoveState : ICoolDogState
     public void HandleInput()
     {
         Vector2 moveDirection = controller.moveAction.ReadValue<Vector2>();
-        
-        if (moveDirection.x == 0)
+
+        if (!controller.isGrounded)
+        {
+            controller.stateMachine.ChangeState(new FallState(controller));
+        }else if (moveDirection.x == 0)
         {
             controller.stateMachine.ChangeState(new IdleState(controller)); 
             return;
@@ -42,7 +45,7 @@ public class MoveState : ICoolDogState
 
     public void UpdateState()
     {
-        
+
     }
 
     IEnumerator StopMovement()
@@ -50,7 +53,9 @@ public class MoveState : ICoolDogState
         float decel = controller.decel;
         while(controller.rb.velocity.x > 0.01f || controller.rb.velocity.x < -0.01f)
         {
-            controller.rb.velocity = Vector3.Lerp(controller.rb.velocity, Vector3.zero, decel);
+            Vector3 horizontalKill = Vector3.zero;
+            horizontalKill.y = controller.rb.velocity.y;
+            controller.rb.velocity = Vector3.Lerp(controller.rb.velocity, horizontalKill, decel);
             //waits for 0.1f seconds before decrementing
             yield return new WaitForSeconds(0.1f);
         }

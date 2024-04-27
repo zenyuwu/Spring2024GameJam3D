@@ -25,6 +25,11 @@ public class IdleState : ICoolDogState
 
     public void HandleInput()
     {
+        if(!controller.isGrounded)
+        {
+            controller.stateMachine.ChangeState(new FallState(controller));
+        }
+        else
         if(controller.moveAction.ReadValue<Vector2>().x != 0)
         {
             controller.stateMachine.ChangeState(new MoveState(controller));

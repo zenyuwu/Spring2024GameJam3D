@@ -15,7 +15,7 @@ public class JumpState : ICoolDogState
     public void EnterState()
     {
         controller.rb.AddForce(Vector3.up * controller.jumpForce, ForceMode.Impulse);
-        controller.stateMachine.ChangeState(new IdleState(controller));
+        controller.StartCoroutine(IsJumping());
     }
 
     public void ExitState()
@@ -33,4 +33,10 @@ public class JumpState : ICoolDogState
         
     }
 
+
+    IEnumerator IsJumping()
+    {
+        yield return new WaitForSeconds(1);
+        controller.stateMachine.ChangeState(new IdleState(controller));
+    }
 }
