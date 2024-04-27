@@ -10,6 +10,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] GameObject dogHead;
     [SerializeField] GameObject coolMeter;
     [SerializeField] GameObject healthMeter;
+    [SerializeField] GameObject skull;
 
     private float cool = 0;
     private float health = 0;
@@ -38,6 +39,7 @@ public class GameManager : Singleton<GameManager>
         cool = newCool;
         if (cool > 100) { cool = 100; }
         coolMeter.GetComponent<Image>().fillAmount = cool / 100;
+        if (cool > 80) { skull.SetActive(true); } else { skull.SetActive(false); }
     }
 
     public void SetHealth(int newHealth)
