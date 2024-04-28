@@ -12329,6 +12329,10 @@ PrefabInstance:
       propertyPath: rb
       value: 
       objectReference: {fileID: 690935261}
+    - target: {fileID: 4469671232198023915, guid: 093963d9e92d4dd4796f083996b68291, type: 3}
+      propertyPath: speed
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5406434998374439608, guid: 093963d9e92d4dd4796f083996b68291, type: 3}
       propertyPath: m_Name
       value: Platform (2)
