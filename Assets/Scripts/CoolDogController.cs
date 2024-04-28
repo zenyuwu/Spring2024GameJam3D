@@ -12,11 +12,14 @@ public class CoolDogController : MonoBehaviour
     private CoolDogCharcterController playerActions;
     [SerializeField]private Transform groundCheck;
     [SerializeField]private GameObject skateBoard;
+    [SerializeField]private GameObject jumpSkateBoard;
     [SerializeField]public SpriteRenderer dogSprite;
+    [SerializeField]public SpriteRenderer jumpDogSprite;
 
     //dogstates
     [SerializeField]public GameObject normalDog;
     [SerializeField]public GameObject railDog;
+    [SerializeField]public GameObject jumpDog;
 
     public InputAction moveAction;
 
@@ -113,9 +116,17 @@ public class CoolDogController : MonoBehaviour
         if (moveDirection.x > 0)
         {
             dogSprite.flipX = false;
+            jumpDogSprite.flipX = false;
+            skateBoard.transform.localRotation =  Quaternion.Euler(0, 270, 0);
+            jumpSkateBoard.transform.localRotation =  Quaternion.Euler(0, 270, 0);
         }
-        if (moveDirection.x < 0) dogSprite.flipX = true;
-
+        if (moveDirection.x < 0)
+        {
+            dogSprite.flipX = true;
+            jumpDogSprite.flipX = true;
+            skateBoard.transform.localRotation = Quaternion.Euler(0, 90, 0);
+            jumpSkateBoard.transform.localRotation = Quaternion.Euler(0, 90, 0);
+        }
         //seperate to car.cs
         if (hit.transform.gameObject.GetComponent<Car>())
         {
@@ -129,7 +140,7 @@ public class CoolDogController : MonoBehaviour
 
         //skateboard rotation, need to lock behind idle state (?)
 
-        skateBoard.transform.localRotation = dogSprite.flipX ? Quaternion.Euler(0, 90, 0) : Quaternion.Euler(0, 270, 0);
+        //skateBoard.transform.localRotation = dogSprite.flipX ? Quaternion.Euler(0, 90, 0) : Quaternion.Euler(0, 270, 0);
 
     }
 
