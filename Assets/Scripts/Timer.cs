@@ -43,6 +43,6 @@ public class Timer : MonoBehaviour
         float seconds = Mathf.FloorToInt(currentTime % 60);
         int milliseconds = Mathf.FloorToInt((currentTime - Mathf.Floor(currentTime)) * 1000);
 
-        Timertextl.text = string.Format(" {0:00} : {1:00} : {2:000}", minutes, seconds,milliseconds);
+        Timertextl.text = string.Format(" {0:00} : {1:00} ", minutes, seconds);
     }
 }
