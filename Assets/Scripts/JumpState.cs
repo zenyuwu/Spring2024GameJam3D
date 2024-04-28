@@ -46,10 +46,17 @@ public class JumpState : ICoolDogState
         velocity.x = moveDirection.x * ((controller.cool / controller.coolNerf) + controller.baseSpeed);
 
         controller.rb.velocity = velocity;
+
+        Debug.Log("y handle velocity: " + controller.rb.velocity.y);
     }
 
     public void UpdateState()
     {
+            Debug.Log("y velocity: " + controller.rb.velocity.y);
+        if (controller.rb.velocity.y == 0f && controller.isGrounded)
+        {
+            controller.stateMachine.ChangeState(new IdleState(controller));
+        }
     }
 
 /*    IEnumerator IsJumping()

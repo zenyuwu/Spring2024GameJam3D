@@ -128,15 +128,15 @@ public class CoolDogController : MonoBehaviour
             jumpSkateBoard.transform.localRotation = Quaternion.Euler(0, 90, 0);
         }
         //seperate to car.cs
-        if (hit.transform.gameObject.GetComponent<Car>())
-        {
-            if (hit.transform.gameObject.GetComponent<Car>().carCrash == false)
-            {
-                rb.AddForce(Vector3.up * 15f, ForceMode.Impulse);
-                hit.transform.gameObject.GetComponent<Car>().GetStomped();
-            }
-            //rb.velocity += new Vector3(0, 7.5f, 0);
-        }
+        //if (hit.transform.gameObject.GetComponent<Car>())
+        //{
+        //    if (hit.transform.gameObject.GetComponent<Car>().carCrash == false)
+        //    {
+        //        rb.AddForce(Vector3.up * 15f, ForceMode.Impulse);
+        //        hit.transform.gameObject.GetComponent<Car>().GetStomped();
+        //    }
+        //    //rb.velocity += new Vector3(0, 7.5f, 0);
+        //}
 
         //skateboard rotation, need to lock behind idle state (?)
 
