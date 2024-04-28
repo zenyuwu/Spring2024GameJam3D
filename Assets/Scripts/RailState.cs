@@ -28,21 +28,12 @@ public class RailState : ICoolDogState
 
     public void ExitState()
     {
-
-
         controller.StartCoroutine(StopMovement());
-    }
-
-    public void HandleInput()
-    {
-        
     }
 
     public void UpdateState()
     {
         if (!controller.isOnRail) controller.stateMachine.ChangeState(new IdleState(controller));
-        //continue anim?
-
     }
 
     IEnumerator StopMovement()

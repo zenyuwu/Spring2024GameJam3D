@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,8 +17,8 @@ public class MoveState : ICoolDogState
     {
         Debug.Log("move enter");
         controller.railDog.SetActive(false);
-/*        controller.normalDog.SetActive(true);*/
-        controller.jumpDog.SetActive(true);
+        controller.normalDog.SetActive(true);
+        controller.jumpDog.SetActive(false);
     }
 
     public void ExitState()
@@ -26,23 +27,13 @@ public class MoveState : ICoolDogState
         controller.StartCoroutine(StopMovement());
     }
 
-    public void Update()
-    {
-        IsJumping();
-    }
-
-
-    public void HandleInput()
+    public void UpdateState()
     {
         Vector2 moveDirection = controller.moveAction.ReadValue<Vector2>();
 
-        //if (!controller.isGrounded)
-        //{
-        //    controller.stateMachine.ChangeState(new FallState(controller));
-        //}else 
         if (moveDirection.x == 0)
         {
-            controller.stateMachine.ChangeState(new IdleState(controller)); 
+            controller.stateMachine.ChangeState(new IdleState(controller));
             return;
         }
 
@@ -53,25 +44,10 @@ public class MoveState : ICoolDogState
         controller.rb.velocity = velocity;
     }
 
-    public void UpdateState()
-    {
-
-    }
-
-    public void IsJumping()
-    {
-        while (controller.isGrounded == false)
-        {
-            controller.jumpDog.SetActive(true);
-        }
-        controller.jumpDog.SetActive(false);
-
-    }
-
     IEnumerator StopMovement()
     {
         float decel = controller.decel;
-        while(controller.rb.velocity.x > 0.01f || controller.rb.velocity.x < -0.01f)
+        while (controller.rb.velocity.x > 0.01f || controller.rb.velocity.x < -0.01f)
         {
             Vector3 horizontalKill = Vector3.zero;
             horizontalKill.y = controller.rb.velocity.y;

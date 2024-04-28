@@ -10,16 +10,14 @@ public class CoolDogController : MonoBehaviour
 {
     public DogStateMachine stateMachine;
     private CoolDogCharcterController playerActions;
-    [SerializeField]private Transform groundCheck;
-    [SerializeField]private GameObject skateBoard;
-    [SerializeField]private GameObject jumpSkateBoard;
-    [SerializeField]public SpriteRenderer dogSprite;
-    [SerializeField]public SpriteRenderer jumpDogSprite;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private GameObject skateBoard;
+    [SerializeField] public SpriteRenderer dogSprite;
 
     //dogstates
-    [SerializeField]public GameObject normalDog;
-    [SerializeField]public GameObject railDog;
-    [SerializeField]public GameObject jumpDog;
+    [SerializeField] public GameObject normalDog;
+    [SerializeField] public GameObject railDog;
+    [SerializeField] public GameObject jumpDog;
 
     public InputAction moveAction;
 
@@ -33,17 +31,14 @@ public class CoolDogController : MonoBehaviour
     [SerializeField] public float coolNerf = 10f;
 
     [SerializeField] public bool faceRight = true;
-    [SerializeField] public float jumpForce = 6f; 
+    [SerializeField] public float jumpForce = 6f;
     [SerializeField] public bool isGrounded = false;
     [SerializeField] public bool isOnRail = false;
-    [SerializeField] public bool isOnCar = false;
     public bool isRailRight;
 
     private LayerMask groundLayerMask;
     private LayerMask railLayerMask;
     private LayerMask carLayerMask;
-
-    public Vector2 moveDirection;
 
     private void Awake()
     {
@@ -64,7 +59,6 @@ public class CoolDogController : MonoBehaviour
         playerActions.Player.Jump.performed += OnJump;
         playerActions.Player.Jump.Enable();
 
-        stateMachine.HandleInput();
     }
 
     private void OnDisable()
@@ -77,7 +71,7 @@ public class CoolDogController : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext context)
     {
-        if(isGrounded || isOnRail || isOnCar)
+        if (isGrounded || isOnRail)
         {
             stateMachine.ChangeState(new JumpState(this));
             cool -= 10;
@@ -86,10 +80,9 @@ public class CoolDogController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        moveDirection = moveAction.ReadValue<Vector2>();
+        Vector2 moveDirection = moveAction.ReadValue<Vector2>();
 
         stateMachine.Update();
-        stateMachine.HandleInput();
         cool -= Time.deltaTime;
         if (cool < 0) cool = 0;
         if (cool > 100) cool = 100;
@@ -104,8 +97,6 @@ public class CoolDogController : MonoBehaviour
         isGrounded = Physics.Raycast(groundCheck.position, Vector3.down, 0.05f, groundLayerMask);
         RaycastHit railHit;
         isOnRail = Physics.Raycast(groundCheck.position, Vector3.down, out railHit, 0.1f, railLayerMask);
-        RaycastHit hit;
-        isOnCar = Physics.Raycast(groundCheck.position, Vector3.down, out hit, 0.10f, carLayerMask);
 
         //Physics.Raycast(groundCheck.position, Vector3.down, 0.1f, railLayerMask);
 
@@ -115,34 +106,20 @@ public class CoolDogController : MonoBehaviour
             stateMachine.ChangeState(new RailState(this, isRailRight));
         }
 
-        if (moveDirection.x > 0)
-        {
-            dogSprite.flipX = false;
-            jumpDogSprite.flipX = false;
-            skateBoard.transform.localRotation =  Quaternion.Euler(0, 270, 0);
-            jumpSkateBoard.transform.localRotation =  Quaternion.Euler(0, 270, 0);
-        }
-        if (moveDirection.x < 0)
-        {
-            dogSprite.flipX = true;
-            jumpDogSprite.flipX = true;
-            skateBoard.transform.localRotation = Quaternion.Euler(0, 90, 0);
-            jumpSkateBoard.transform.localRotation = Quaternion.Euler(0, 90, 0);
-        }
+        if (moveDirection.x > 0) dogSprite.flipX = false;
+        if (moveDirection.x < 0) dogSprite.flipX = true;
+
         //seperate to car.cs
-        if (hit.transform.gameObject.GetComponent<Car>())
+        RaycastHit hit;
+        if (Physics.Raycast(groundCheck.position, Vector3.down, out hit, 0.10f, carLayerMask))
         {
-            if (hit.transform.gameObject.GetComponent<Car>().carCrash == false)
-            {
-                rb.AddForce(Vector3.up * 15f, ForceMode.Impulse);
-                hit.transform.gameObject.GetComponent<Car>().GetStomped();
-            }
-            //rb.velocity += new Vector3(0, 7.5f, 0);
+            hit.transform.gameObject.GetComponent<Car>().GetStomped();
+            rb.velocity += new Vector3(0, 7.5f, 0);
         }
 
         //skateboard rotation, need to lock behind idle state (?)
 
-        //skateBoard.transform.localRotation = dogSprite.flipX ? Quaternion.Euler(0, 90, 0) : Quaternion.Euler(0, 270, 0);
+        skateBoard.transform.localRotation = faceRight ? Quaternion.Euler(0, 90, 0) : Quaternion.Euler(0, 270, 0);
 
     }
 
@@ -153,4 +130,3 @@ public class CoolDogController : MonoBehaviour
             Gizmos.DrawRay(transform.position, groundCheck.position);
         }*/
 }
-

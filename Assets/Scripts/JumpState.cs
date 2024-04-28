@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class JumpState : ICoolDogState
 {
     CoolDogController controller;
+    bool check = false;
 
     public JumpState(CoolDogController controller)
     {
@@ -21,52 +22,36 @@ public class JumpState : ICoolDogState
         controller.jumpDog.SetActive(true);
         Debug.Log("jump enter");
 
-        controller.stateMachine.ChangeState(new MoveState(controller));
+        controller.StartCoroutine(WaitToCheckGround());
     }
 
     public void ExitState()
     {
-        //controller.stateMachine.ChangeState(new IdleState(controller));
-        //controller.StartCoroutine(IsJumping());
-    }
-
-
-    public void HandleInput()
-    {
-        controller.stateMachine.ChangeState(new MoveState(controller));
-        //Vector2 moveDirection = controller.moveAction.ReadValue<Vector2>();
-
-        /*        if (controller.moveDirection.x != 0)
-                {
-                    controller.stateMachine.ChangeState(new MoveState(controller));
-                }
-
-                Vector2 velocity = controller.rb.velocity;
-
-                velocity.x = controller.moveDirection.x * ((controller.cool / controller.coolNerf) + controller.baseSpeed);
-
-                controller.rb.velocity = velocity;
-
-                Debug.Log("y handle velocity: " + controller.rb.velocity.y);
-
-                if (controller.moveDirection.x == 0)
-                {
-                    controller.stateMachine.ChangeState(new IdleState(controller));
-                    return;
-                }*/
 
     }
 
     public void UpdateState()
     {
-            Debug.Log("y velocity: " + controller.rb.velocity.y);
-        if (controller.rb.velocity.y == 0f || controller.isGrounded || controller.isOnCar || controller.moveDirection.x != 0)
+        if (check && controller.isGrounded)
         {
             controller.stateMachine.ChangeState(new MoveState(controller));
         }
+
+        Vector2 moveDirection = controller.moveAction.ReadValue<Vector2>();
+
+        Vector2 velocity = controller.rb.velocity;
+
+        velocity.x = moveDirection.x * ((controller.cool / controller.coolNerf) + controller.baseSpeed);
+
+        controller.rb.velocity = velocity;
+
     }
 
-
+    IEnumerator WaitToCheckGround()
+    {
+        yield return new WaitForSeconds(0.5f);
+        check = true;
+    }
 
 
 }

@@ -14,11 +14,6 @@ public class HurtState : ICoolDogState
         throw new System.NotImplementedException();
     }
 
-    public void HandleInput()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public void UpdateState()
     {
         throw new System.NotImplementedException();

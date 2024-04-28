@@ -25,11 +25,6 @@ public class DogStateMachine : MonoBehaviour
     {
         currentState.UpdateState();
     }
-
-    public void HandleInput()
-    {
-        currentState.HandleInput();
-    }
 }
 
 public interface ICoolDogState
@@ -37,5 +32,4 @@ public interface ICoolDogState
     void EnterState();
     void UpdateState();
     void ExitState();
-    void HandleInput();
 }
