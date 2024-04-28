@@ -60,7 +60,7 @@ public class MoveState : ICoolDogState
             //waits for 0.1f seconds before decrementing
             yield return new WaitForSeconds(0.1f);
         }
-        controller.rb.velocity = Vector3.zero;
+        //controller.rb.velocity = Vector3.zero;
     }
 
 }
