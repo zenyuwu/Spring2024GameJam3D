@@ -14,6 +14,10 @@ public class CoolDogController : MonoBehaviour
     [SerializeField]private GameObject skateBoard;
     [SerializeField]public SpriteRenderer dogSprite;
 
+    //dogstates
+    [SerializeField]public GameObject normalDog;
+    [SerializeField]public GameObject railDog;
+
     public InputAction moveAction;
 
     [SerializeField] public Rigidbody rb;
@@ -106,7 +110,10 @@ public class CoolDogController : MonoBehaviour
             stateMachine.ChangeState(new RailState(this, isRailRight));
         }
 
-        if (moveDirection.x > 0) dogSprite.flipX = false;
+        if (moveDirection.x > 0)
+        {
+            dogSprite.flipX = false;
+        }
         if (moveDirection.x < 0) dogSprite.flipX = true;
 
         //seperate to car.cs

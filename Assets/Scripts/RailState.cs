@@ -19,11 +19,18 @@ public class RailState : ICoolDogState
     {
         //do anim
         Debug.Log("rail enter");
+
+        //activate RailDog
+        controller.railDog.SetActive(true);
+        controller.normalDog.SetActive(false);
     }
 
     public void ExitState()
     {
-        //
+        //exit RailDog
+        controller.railDog.SetActive(false);
+        controller.normalDog.SetActive(true);
+
         controller.StartCoroutine(StopMovement());
     }
 
