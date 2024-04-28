@@ -13,6 +13,10 @@ public class CoolDogController : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private GameObject skateBoard;
     [SerializeField] public SpriteRenderer dogSprite;
+    [SerializeField] private GameObject jumpSkateBoard;
+    [SerializeField] public SpriteRenderer jumpDogSprite;
+
+    [SerializeField] public AudioSource bark;
 
     //dogstates
     [SerializeField] public GameObject normalDog;
@@ -59,6 +63,9 @@ public class CoolDogController : MonoBehaviour
 
         playerActions.Player.Jump.performed += OnJump;
         playerActions.Player.Jump.Enable();
+
+        playerActions.Player.Bark.performed += OnBark;
+        playerActions.Player.Bark.Enable();
     }
 
     private void OnDisable()
@@ -67,6 +74,9 @@ public class CoolDogController : MonoBehaviour
 
         playerActions.Player.Jump.performed -= OnJump;
         playerActions.Player.Jump.Disable();
+
+        playerActions.Player.Bark.performed -= OnBark;
+        playerActions.Player.Bark.Disable();
     }
 
     private void OnJump(InputAction.CallbackContext context)
@@ -76,6 +86,11 @@ public class CoolDogController : MonoBehaviour
             stateMachine.ChangeState(new JumpState(this));
             cool -= 10;
         }
+    }
+    private void OnBark(InputAction.CallbackContext context)
+    {
+        bark.pitch = (Random.Range(0.8f, 1.2f));
+        bark.Play();
     }
 
     private void FixedUpdate()

@@ -44,6 +44,15 @@ public partial class @CoolDogCharcterController: IInputActionCollection2, IDispo
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Bark"",
+                    ""type"": ""Button"",
+                    ""id"": ""0017fe0c-e5d1-4c54-be79-0d41bdc380a7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -176,6 +185,28 @@ public partial class @CoolDogCharcterController: IInputActionCollection2, IDispo
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a538abd3-acd8-4293-b207-c685c3088c1f"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Bark"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f342064b-e0e2-487d-bea2-b4f835e5ffbd"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Bark"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -765,6 +796,7 @@ public partial class @CoolDogCharcterController: IInputActionCollection2, IDispo
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_Bark = m_Player.FindAction("Bark", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -840,12 +872,14 @@ public partial class @CoolDogCharcterController: IInputActionCollection2, IDispo
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_Bark;
     public struct PlayerActions
     {
         private @CoolDogCharcterController m_Wrapper;
         public PlayerActions(@CoolDogCharcterController wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        public InputAction @Bark => m_Wrapper.m_Player_Bark;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -861,6 +895,9 @@ public partial class @CoolDogCharcterController: IInputActionCollection2, IDispo
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @Bark.started += instance.OnBark;
+            @Bark.performed += instance.OnBark;
+            @Bark.canceled += instance.OnBark;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -871,6 +908,9 @@ public partial class @CoolDogCharcterController: IInputActionCollection2, IDispo
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @Bark.started -= instance.OnBark;
+            @Bark.performed -= instance.OnBark;
+            @Bark.canceled -= instance.OnBark;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1055,6 +1095,7 @@ public partial class @CoolDogCharcterController: IInputActionCollection2, IDispo
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnBark(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
