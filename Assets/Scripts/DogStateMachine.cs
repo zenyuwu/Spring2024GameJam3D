@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class DogStateMachine : MonoBehaviour
 {
-    private ICoolDogState currentState;
+    public ICoolDogState currentState;
     [SerializeField] CoolDogController controller;
 
     private void Awake()

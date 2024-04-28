@@ -7,6 +7,7 @@ public class JumpState : ICoolDogState
 {
     CoolDogController controller;
     bool check = false;
+    public string description;
 
     public JumpState(CoolDogController controller)
     {
@@ -36,7 +37,7 @@ public class JumpState : ICoolDogState
         {
             controller.stateMachine.ChangeState(new MoveState(controller));
         }
-
+        
         Vector2 moveDirection = controller.moveAction.ReadValue<Vector2>();
 
         Vector2 velocity = controller.rb.velocity;
@@ -44,14 +45,11 @@ public class JumpState : ICoolDogState
         velocity.x = moveDirection.x * ((controller.cool / controller.coolNerf) + controller.baseSpeed);
 
         controller.rb.velocity = velocity;
-
     }
 
     IEnumerator WaitToCheckGround()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
         check = true;
     }
-
-
 }

@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 public class IdleState : ICoolDogState
 {
     private CoolDogController controller;
+    public string description;
 
     public IdleState(CoolDogController controller)
     {
@@ -29,7 +30,6 @@ public class IdleState : ICoolDogState
 
     public void UpdateState()
     {
-
         if (controller.moveAction.ReadValue<Vector2>().x != 0)
         {
             controller.stateMachine.ChangeState(new MoveState(controller));

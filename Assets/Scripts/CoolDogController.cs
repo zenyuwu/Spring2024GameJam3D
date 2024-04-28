@@ -34,6 +34,7 @@ public class CoolDogController : MonoBehaviour
     [SerializeField] public float jumpForce = 6f;
     [SerializeField] public bool isGrounded = false;
     [SerializeField] public bool isOnRail = false;
+    [SerializeField] public bool isOnCar = false;
     public bool isRailRight;
 
     private LayerMask groundLayerMask;
@@ -58,7 +59,6 @@ public class CoolDogController : MonoBehaviour
 
         playerActions.Player.Jump.performed += OnJump;
         playerActions.Player.Jump.Enable();
-
     }
 
     private void OnDisable()
@@ -71,7 +71,7 @@ public class CoolDogController : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext context)
     {
-        if (isGrounded || isOnRail)
+        if (isGrounded || isOnRail || isOnCar)
         {
             stateMachine.ChangeState(new JumpState(this));
             cool -= 10;
@@ -97,6 +97,8 @@ public class CoolDogController : MonoBehaviour
         isGrounded = Physics.Raycast(groundCheck.position, Vector3.down, 0.05f, groundLayerMask);
         RaycastHit railHit;
         isOnRail = Physics.Raycast(groundCheck.position, Vector3.down, out railHit, 0.1f, railLayerMask);
+        RaycastHit hit;
+        isOnCar = Physics.Raycast(groundCheck.position, Vector3.down, out hit, 0.10f, carLayerMask);
 
         //Physics.Raycast(groundCheck.position, Vector3.down, 0.1f, railLayerMask);
 
@@ -110,11 +112,14 @@ public class CoolDogController : MonoBehaviour
         if (moveDirection.x < 0) dogSprite.flipX = true;
 
         //seperate to car.cs
-        RaycastHit hit;
-        if (Physics.Raycast(groundCheck.position, Vector3.down, out hit, 0.10f, carLayerMask))
+        if (isOnCar)
         {
-            hit.transform.gameObject.GetComponent<Car>().GetStomped();
-            rb.velocity += new Vector3(0, 7.5f, 0);
+            if (hit.transform.gameObject.GetComponent<Car>().carCrash == false)
+            {
+                rb.AddForce(Vector3.up * 15f, ForceMode.Impulse);
+                hit.transform.gameObject.GetComponent<Car>().GetStomped();
+            }
+            //rb.velocity += new Vector3(0, 7.5f, 0);
         }
 
         //skateboard rotation, need to lock behind idle state (?)

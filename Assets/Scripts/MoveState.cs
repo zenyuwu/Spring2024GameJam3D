@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.IO.LowLevel.Unsafe;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -49,6 +50,10 @@ public class MoveState : ICoolDogState
         float decel = controller.decel;
         while (controller.rb.velocity.x > 0.01f || controller.rb.velocity.x < -0.01f)
         {
+            if (controller.stateMachine.currentState.ToString() == "JumpState")
+            {
+                yield break;
+            }
             Vector3 horizontalKill = Vector3.zero;
             horizontalKill.y = controller.rb.velocity.y;
             controller.rb.velocity = Vector3.Lerp(controller.rb.velocity, horizontalKill, decel);
