@@ -34,7 +34,7 @@ public class JumpState : ICoolDogState
 
     public void UpdateState()
     {
-        if (check && controller.isGrounded)
+        if (check && (controller.isGrounded || controller.isOnCar))
         {
             controller.stateMachine.ChangeState(new MoveState(controller));
         }

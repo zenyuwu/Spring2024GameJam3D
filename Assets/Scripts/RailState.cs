@@ -28,7 +28,7 @@ public class RailState : ICoolDogState
 
     public void ExitState()
     {
-        controller.cool += 10;
+        controller.cool += controller.railCool;
         controller.StartCoroutine(StopMovement());
     }
 

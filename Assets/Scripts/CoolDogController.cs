@@ -8,6 +8,8 @@ using UnityEngine.InputSystem.XR;
 [RequireComponent(typeof(Rigidbody))]
 public class CoolDogController : MonoBehaviour
 {
+    [SerializeField] public float railCool, copCool, jumpCool, coolDecay;
+
     public DogStateMachine stateMachine;
     private CoolDogCharcterController playerActions;
     [SerializeField] private Transform groundCheck;
@@ -84,7 +86,7 @@ public class CoolDogController : MonoBehaviour
         if (isGrounded || isOnRail || isOnCar)
         {
             stateMachine.ChangeState(new JumpState(this));
-            cool -= 10;
+            cool += jumpCool;
         }
     }
     private void OnBark(InputAction.CallbackContext context)
@@ -98,7 +100,7 @@ public class CoolDogController : MonoBehaviour
         Vector2 moveDirection = moveAction.ReadValue<Vector2>();
 
         stateMachine.Update();
-        cool -= Time.deltaTime;
+        cool -= Time.deltaTime * coolDecay;
         if (cool < 0) cool = 0;
         if (cool > 100) cool = 100;
         GameManager.Instance.SetCool(cool);
@@ -143,7 +145,7 @@ public class CoolDogController : MonoBehaviour
         {
             if (hit.transform.gameObject.GetComponent<Car>().carCrash == false)
             {
-
+                cool += copCool;
                 hit.transform.gameObject.GetComponent<Car>().GetStomped();
             }
             //rb.velocity += new Vector3(0, 7.5f, 0);

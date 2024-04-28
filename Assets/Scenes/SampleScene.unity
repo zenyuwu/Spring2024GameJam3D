@@ -3148,6 +3148,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34762e193edd670439aebd6e72a54509, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  railCool: 10
+  copCool: 20
+  jumpCool: 5
+  coolDecay: 5
   stateMachine: {fileID: 690935270}
   groundCheck: {fileID: 890811900}
   skateBoard: {fileID: 1846124979}
