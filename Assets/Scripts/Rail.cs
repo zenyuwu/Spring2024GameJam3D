@@ -12,12 +12,15 @@ public class Rail : MonoBehaviour
     [SerializeField] public AudioSource grind;
     [SerializeField] public AudioSource style;
 
-
+    private void OnTriggerEnter(Collider other)
+    {
+        grind.Play();
+    }
 
     private void OnTriggerStay(Collider other)
     {
         //disable inputs for everything but jump and bark
-        grind.Play();
+
 
         if (isOnRail == true)
         {

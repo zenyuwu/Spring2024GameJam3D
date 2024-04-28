@@ -143,7 +143,7 @@ public class CoolDogController : MonoBehaviour
         {
             if (hit.transform.gameObject.GetComponent<Car>().carCrash == false)
             {
-                rb.AddForce(Vector3.up * 15f, ForceMode.Impulse);
+
                 hit.transform.gameObject.GetComponent<Car>().GetStomped();
             }
             //rb.velocity += new Vector3(0, 7.5f, 0);

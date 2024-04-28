@@ -8,8 +8,9 @@ public class Car : MonoBehaviour
     [SerializeField] GameObject kaboom;
     [SerializeField] GameObject car1;
     [SerializeField] GameObject car2;
-    CoolDogCharcterController controller;
+    [SerializeField]CoolDogController controller;
     public bool carCrash = false;
+    [SerializeField] public float bounce = 20f;
     Transform boomTransform;
     // Start is called before the first frame update
     void Start()
@@ -24,6 +25,11 @@ public class Car : MonoBehaviour
 
     public void GetStomped()
     {
+        if(carCrash == false)
+        {
+            controller.rb.AddForce(Vector3.up * bounce, ForceMode.Impulse);
+        }
+
         car1.GetComponent<SpriteRenderer>().enabled = false;
         car2.GetComponent<SpriteRenderer>().enabled = true;
         //Vector3 scaleChange = gameObject.transform.localScale;
