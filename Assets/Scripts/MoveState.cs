@@ -15,6 +15,9 @@ public class MoveState : ICoolDogState
     public void EnterState()
     {
         Debug.Log("move enter");
+        controller.railDog.SetActive(false);
+        controller.normalDog.SetActive(true);
+        controller.jumpDog.SetActive(false);
     }
 
     public void ExitState()

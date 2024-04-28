@@ -23,13 +23,12 @@ public class RailState : ICoolDogState
         //activate RailDog
         controller.railDog.SetActive(true);
         controller.normalDog.SetActive(false);
+        controller.jumpDog.SetActive(false);
     }
 
     public void ExitState()
     {
-        //exit RailDog
-        controller.railDog.SetActive(false);
-        controller.normalDog.SetActive(true);
+
 
         controller.StartCoroutine(StopMovement());
     }

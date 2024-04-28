@@ -15,6 +15,9 @@ public class IdleState : ICoolDogState
 
     public void EnterState()
     {
+        controller.railDog.SetActive(false);
+        controller.normalDog.SetActive(true);
+        controller.jumpDog.SetActive(false);
         Debug.Log("idle enter");
     }
 

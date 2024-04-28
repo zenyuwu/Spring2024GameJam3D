@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &7369597 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2a162f1b99d29ce48b059dc571a89e47, type: 3}
+  m_PrefabInstance: {fileID: 1991544399}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &43438539
 GameObject:
   m_ObjectHideFlags: 0
@@ -278,11 +283,11 @@ Transform:
   m_GameObject: {fileID: 61201427}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1433859726}
+  m_Father: {fileID: 1936331989}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &61201429
 SpriteRenderer:
@@ -526,6 +531,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 338004702}
+  - component: {fileID: 338004703}
   m_Layer: 0
   m_Name: Pivot
   m_TagString: Untagged
@@ -542,13 +548,29 @@ Transform:
   m_GameObject: {fileID: 338004701}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.473, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1991544400}
   m_Father: {fileID: 1433859726}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &338004703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 338004701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9353769ae56c9eb4198d33aa109baec3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  angle: 180
+  spinX: 1
+  spinY: 0
+  spinZ: 0
 --- !u!1001 &373497289
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1005,9 +1027,12 @@ MonoBehaviour:
   stateMachine: {fileID: 690935270}
   groundCheck: {fileID: 890811900}
   skateBoard: {fileID: 1846124979}
+  jumpSkateBoard: {fileID: 7369597}
   dogSprite: {fileID: 408691706}
+  jumpDogSprite: {fileID: 61201429}
   normalDog: {fileID: 240497505}
   railDog: {fileID: 1894705835}
+  jumpDog: {fileID: 1433859725}
   moveAction:
     m_Name: Move
     m_Type: 0
@@ -2164,6 +2189,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   angle: -200
+  spinX: 0
+  spinY: 1
+  spinZ: 0
 --- !u!4 &1289215193 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2a162f1b99d29ce48b059dc571a89e47, type: 3}
@@ -2569,7 +2597,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1433859726
 Transform:
   m_ObjectHideFlags: 0
@@ -2584,7 +2612,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 338004702}
-  - {fileID: 61201428}
+  - {fileID: 1936331989}
   m_Father: {fileID: 690935265}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1457910710
@@ -3182,6 +3210,53 @@ Transform:
   - {fileID: 1265355868}
   m_Father: {fileID: 690935265}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1936331988
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1936331989}
+  - component: {fileID: 1936331990}
+  m_Layer: 0
+  m_Name: Squash
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1936331989
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936331988}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 61201428}
+  m_Father: {fileID: 1433859726}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1936331990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936331988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5a85524ab3b00548890f1914656ab6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  squashAmount: 0.025
+  rb: {fileID: 690935261}
 --- !u!1 &1966054938
 GameObject:
   m_ObjectHideFlags: 0
@@ -3469,7 +3544,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2a162f1b99d29ce48b059dc571a89e47, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.47299996
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2a162f1b99d29ce48b059dc571a89e47, type: 3}
       propertyPath: m_LocalPosition.z
