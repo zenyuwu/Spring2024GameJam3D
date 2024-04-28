@@ -50,7 +50,9 @@ MonoBehaviour:
   kaboom: {fileID: 1547353198598454458, guid: fac8e3e9cc43ae44bafb3ab9e01f8b10, type: 3}
   car1: {fileID: 3033799029907287883}
   car2: {fileID: 8870077165751291639}
+  controller: {fileID: 0}
   carCrash: 0
+  bounce: 20
 --- !u!65 &212834461940319964
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -58,7 +60,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 580493555751799519}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 68cfac3174c907f419104e7bb9f2ff63, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
