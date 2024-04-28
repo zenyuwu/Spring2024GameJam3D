@@ -16,6 +16,7 @@ public class JumpState : ICoolDogState
 
     public void EnterState()
     {
+        controller.cool -= 5;
         controller.rb.AddForce(Vector3.up * controller.jumpForce, ForceMode.Impulse);
 
         controller.railDog.SetActive(false);
