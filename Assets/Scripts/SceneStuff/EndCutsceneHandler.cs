@@ -14,6 +14,7 @@ public class EndCutsceneHandler : MonoBehaviour
 
     IEnumerator Cutscene()
     {
+        yield return new WaitForSeconds(1);
         LeanTween.moveLocalX(heartL, -240, 0.5f);
         LeanTween.moveLocalX(heartR, -200, 0.5f);
         LeanTween.rotateZ(heartR, -30, 1f);

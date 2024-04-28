@@ -23,10 +23,12 @@ public class Timer : MonoBehaviour
             {
                 timeLeft -= Time.deltaTime;
                 UpdateTimer(timeLeft);
+                GameManager.Instance.SetTimeLeft(timeLeft);
             }
             else
             {
                 //timer ended
+                GameManager.Instance.LoseGame();
                 timeLeft = 0;
                 timeOn = false;
             }

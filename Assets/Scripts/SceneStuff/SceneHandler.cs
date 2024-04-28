@@ -9,6 +9,7 @@ public class SceneHandler : MonoBehaviour
 
     void Start()
     {
+        GameManager.Instance.InitDog();
         fader.gameObject.SetActive(true);
 
         LeanTween.scale(fader, new Vector3(1, 1, 1), 0);
@@ -37,6 +38,39 @@ public class SceneHandler : MonoBehaviour
         LeanTween.scale(fader, new Vector3(1, 1, 1), 0.5f).setOnComplete(() =>
         {
             SceneManager.LoadScene(1);
+        });
+    }
+
+    public void OpenGameLost()
+    {
+        fader.gameObject.SetActive(true);
+
+        LeanTween.scale(fader, Vector3.zero, 0);
+        LeanTween.scale(fader, new Vector3(1, 1, 1), 0.5f).setOnComplete(() =>
+        {
+            SceneManager.LoadScene(2);
+        });
+    }
+
+    public void OpenGameMeh()
+    {
+        fader.gameObject.SetActive(true);
+
+        LeanTween.scale(fader, Vector3.zero, 0);
+        LeanTween.scale(fader, new Vector3(1, 1, 1), 0.5f).setOnComplete(() =>
+        {
+            SceneManager.LoadScene(3);
+        });
+    }
+
+    public void OpenGameWon()
+    {
+        fader.gameObject.SetActive(true);
+
+        LeanTween.scale(fader, Vector3.zero, 0);
+        LeanTween.scale(fader, new Vector3(1, 1, 1), 0.5f).setOnComplete(() =>
+        {
+            SceneManager.LoadScene(4);
         });
     }
 }

@@ -105,8 +105,8 @@ public class CoolDogController : MonoBehaviour
         if (cool > 100) cool = 100;
         GameManager.Instance.SetCool(cool);
 
+        if (transform.position.y < -50) health--;
         if (health > 3) health = 3;
-        if (health < 0) health = 0;
         GameManager.Instance.SetHealth(health);
 
         //ground check
