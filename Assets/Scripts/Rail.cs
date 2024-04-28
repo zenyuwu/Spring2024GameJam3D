@@ -9,10 +9,15 @@ public class Rail : MonoBehaviour
     [SerializeField] public bool isOnRail;
     [SerializeField] public CoolDogController controller;
 
+    [SerializeField] public AudioSource grind;
+    [SerializeField] public AudioSource style;
+
+
 
     private void OnTriggerStay(Collider other)
     {
         //disable inputs for everything but jump and bark
+        grind.Play();
 
         if (isOnRail == true)
         {
@@ -32,7 +37,9 @@ public class Rail : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         //force player off rail
-        
+        grind.Stop();
+        style.Play();
+
         controller.rb.velocity += new Vector3(0, 7.5f, 0);
 
         isOnRail = false;

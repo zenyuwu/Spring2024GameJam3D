@@ -123,8 +123,20 @@ public class CoolDogController : MonoBehaviour
             stateMachine.ChangeState(new RailState(this, isRailRight));
         }
 
-        if (moveDirection.x > 0) dogSprite.flipX = false;
-        if (moveDirection.x < 0) dogSprite.flipX = true;
+        if (moveDirection.x > 0)
+        {
+            dogSprite.flipX = false;
+            jumpDogSprite.flipX = false;
+            skateBoard.transform.localRotation = Quaternion.Euler(0, 270, 0);
+            jumpSkateBoard.transform.localRotation = Quaternion.Euler(0, 270, 0);
+        }
+        if (moveDirection.x < 0) 
+        {
+            dogSprite.flipX = true;
+            jumpDogSprite.flipX = true;
+            skateBoard.transform.localRotation = Quaternion.Euler(0, 90, 0);
+            jumpSkateBoard.transform.localRotation = Quaternion.Euler(0, 90, 0);
+        }
 
         //seperate to car.cs
         if (isOnCar)
@@ -139,7 +151,6 @@ public class CoolDogController : MonoBehaviour
 
         //skateboard rotation, need to lock behind idle state (?)
 
-        skateBoard.transform.localRotation = faceRight ? Quaternion.Euler(0, 90, 0) : Quaternion.Euler(0, 270, 0);
 
     }
 
