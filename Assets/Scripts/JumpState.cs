@@ -20,54 +20,53 @@ public class JumpState : ICoolDogState
         controller.normalDog.SetActive(false);
         controller.jumpDog.SetActive(true);
         Debug.Log("jump enter");
+
+        controller.stateMachine.ChangeState(new MoveState(controller));
     }
 
     public void ExitState()
     {
+        //controller.stateMachine.ChangeState(new IdleState(controller));
         //controller.StartCoroutine(IsJumping());
     }
 
+
     public void HandleInput()
     {
-        Vector2 moveDirection = controller.moveAction.ReadValue<Vector2>();
+        controller.stateMachine.ChangeState(new MoveState(controller));
+        //Vector2 moveDirection = controller.moveAction.ReadValue<Vector2>();
 
-        //if (!controller.isGrounded)
-        //{
-        //    controller.stateMachine.ChangeState(new FallState(controller));
-        //}else 
-/*        if (moveDirection.x == 0)
-        {
-            controller.stateMachine.ChangeState(new IdleState(controller));
-            return;
-        }*/
+        /*        if (controller.moveDirection.x != 0)
+                {
+                    controller.stateMachine.ChangeState(new MoveState(controller));
+                }
 
-        Vector2 velocity = controller.rb.velocity;
+                Vector2 velocity = controller.rb.velocity;
 
-        velocity.x = moveDirection.x * ((controller.cool / controller.coolNerf) + controller.baseSpeed);
+                velocity.x = controller.moveDirection.x * ((controller.cool / controller.coolNerf) + controller.baseSpeed);
 
-        controller.rb.velocity = velocity;
+                controller.rb.velocity = velocity;
 
-        Debug.Log("y handle velocity: " + controller.rb.velocity.y);
+                Debug.Log("y handle velocity: " + controller.rb.velocity.y);
+
+                if (controller.moveDirection.x == 0)
+                {
+                    controller.stateMachine.ChangeState(new IdleState(controller));
+                    return;
+                }*/
+
     }
 
     public void UpdateState()
     {
             Debug.Log("y velocity: " + controller.rb.velocity.y);
-        if (controller.rb.velocity.y == 0f && controller.isGrounded)
+        if (controller.rb.velocity.y == 0f || controller.isGrounded || controller.isOnCar || controller.moveDirection.x != 0)
         {
-            controller.stateMachine.ChangeState(new IdleState(controller));
+            controller.stateMachine.ChangeState(new MoveState(controller));
         }
     }
 
-/*    IEnumerator IsJumping()
-    {
-        while (controller.rb.velocity.y > 0.01f || controller.isGrounded == false)
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
-        controller.stateMachine.ChangeState(new IdleState(controller));
 
-    }*/
 
 
 }

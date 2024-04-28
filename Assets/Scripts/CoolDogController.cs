@@ -43,6 +43,8 @@ public class CoolDogController : MonoBehaviour
     private LayerMask railLayerMask;
     private LayerMask carLayerMask;
 
+    public Vector2 moveDirection;
+
     private void Awake()
     {
         playerActions = new CoolDogCharcterController();
@@ -84,7 +86,7 @@ public class CoolDogController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector2 moveDirection = moveAction.ReadValue<Vector2>();
+        moveDirection = moveAction.ReadValue<Vector2>();
 
         stateMachine.Update();
         stateMachine.HandleInput();
@@ -128,15 +130,15 @@ public class CoolDogController : MonoBehaviour
             jumpSkateBoard.transform.localRotation = Quaternion.Euler(0, 90, 0);
         }
         //seperate to car.cs
-        //if (hit.transform.gameObject.GetComponent<Car>())
-        //{
-        //    if (hit.transform.gameObject.GetComponent<Car>().carCrash == false)
-        //    {
-        //        rb.AddForce(Vector3.up * 15f, ForceMode.Impulse);
-        //        hit.transform.gameObject.GetComponent<Car>().GetStomped();
-        //    }
-        //    //rb.velocity += new Vector3(0, 7.5f, 0);
-        //}
+        if (hit.transform.gameObject.GetComponent<Car>())
+        {
+            if (hit.transform.gameObject.GetComponent<Car>().carCrash == false)
+            {
+                rb.AddForce(Vector3.up * 15f, ForceMode.Impulse);
+                hit.transform.gameObject.GetComponent<Car>().GetStomped();
+            }
+            //rb.velocity += new Vector3(0, 7.5f, 0);
+        }
 
         //skateboard rotation, need to lock behind idle state (?)
 
@@ -144,11 +146,11 @@ public class CoolDogController : MonoBehaviour
 
     }
 
-/*    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.color = isGrounded ? Color.green : Color.red;
-        Gizmos.DrawRay(transform.position, groundCheck.position);
-    }*/
+    /*    private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.color = isGrounded ? Color.green : Color.red;
+            Gizmos.DrawRay(transform.position, groundCheck.position);
+        }*/
 }
 

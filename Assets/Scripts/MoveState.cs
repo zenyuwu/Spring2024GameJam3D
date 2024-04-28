@@ -16,8 +16,8 @@ public class MoveState : ICoolDogState
     {
         Debug.Log("move enter");
         controller.railDog.SetActive(false);
-        controller.normalDog.SetActive(true);
-        controller.jumpDog.SetActive(false);
+/*        controller.normalDog.SetActive(true);*/
+        controller.jumpDog.SetActive(true);
     }
 
     public void ExitState()
@@ -25,6 +25,12 @@ public class MoveState : ICoolDogState
         Debug.Log("slow down");
         controller.StartCoroutine(StopMovement());
     }
+
+    public void Update()
+    {
+        IsJumping();
+    }
+
 
     public void HandleInput()
     {
@@ -49,6 +55,16 @@ public class MoveState : ICoolDogState
 
     public void UpdateState()
     {
+
+    }
+
+    public void IsJumping()
+    {
+        while (controller.isGrounded == false)
+        {
+            controller.jumpDog.SetActive(true);
+        }
+        controller.jumpDog.SetActive(false);
 
     }
 

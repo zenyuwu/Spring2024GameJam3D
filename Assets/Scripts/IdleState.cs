@@ -26,14 +26,19 @@ public class IdleState : ICoolDogState
 
     }
 
+    public void Update()
+    {
+        IsJumping();
+    }
+
     public void HandleInput()
     {
-        //if(!controller.isGrounded)
-        //{
-        //    controller.stateMachine.ChangeState(new FallState(controller));
-        //}
-        //else
-        if(controller.moveAction.ReadValue<Vector2>().x != 0)
+        if (!controller.isGrounded)
+        {
+            controller.normalDog.SetActive(true);
+        }
+        else
+        if (controller.moveAction.ReadValue<Vector2>().x != 0)
         {
             controller.stateMachine.ChangeState(new MoveState(controller));
         }
@@ -41,6 +46,16 @@ public class IdleState : ICoolDogState
 
     public void UpdateState()
     {
+
+    }
+
+    public void IsJumping()
+    {
+        while (controller.isGrounded == false)
+        {
+            controller.jumpDog.SetActive(true);
+        }
+        controller.jumpDog.SetActive(false);
 
     }
 }
