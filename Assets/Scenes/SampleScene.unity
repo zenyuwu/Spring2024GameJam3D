@@ -7478,7 +7478,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5648903415244123931, guid: 859ed90b88668c2449c612a32c7c6724, type: 3}
       propertyPath: bounce
-      value: 35
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5648903415244123931, guid: 859ed90b88668c2449c612a32c7c6724, type: 3}
       propertyPath: controller
